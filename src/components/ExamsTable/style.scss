@@ -1,0 +1,99 @@
+@import '../../variables.scss';
+
+.exams-table {
+    thead {
+        text-align: left;
+        display: flex;
+        padding: 6px;
+        font-size: 12px;
+        color: $charcoal;
+        th {
+            &.details {
+                flex-basis: 45%;
+            }
+            &.numbers {
+                flex-basis: 20%;
+            }
+            &.tags {
+                flex-basis: 25%;
+            }
+            &.tools {
+                flex-basis: 10%;
+            }
+        }
+    }
+    tbody {
+        tr {
+            display: flex;
+            color: $charcoal;
+            &:not(:last-child) {
+                border-bottom: 1px solid #E4E4E4;
+            }
+            .details {
+                flex-basis: 45%;
+                font-weight: $SemiBold;
+                h1 {
+                    font-size: 16px;
+                }
+                p {
+                    font-size: 13px;
+                    color: #787878;
+                }
+            }
+            .numbers {
+                flex-basis: 20%;
+                font-size: 12px;
+                b {
+                    font-size: 14px;
+                }
+            }
+            .tags {
+                flex-basis: 25%;
+            }
+            .tools {
+                flex-basis: 10%;
+                text-align: right;
+                padding: 12px 0;
+                box-sizing: border-box;
+                button {
+                    cursor: pointer;
+                    border: none;
+                    height: 30px;
+                    width: 30px;
+                    border-radius: 6px;
+                    background-color: transparent;
+                    line-height: 40px;
+                    margin-left: 3px;
+                    transition: 0.2s;
+                    img {
+                        object-fit: cover;
+                    }
+                    &.tool-pin {
+                        &:hover {
+                            background-color: $info !important;
+                            .pin {
+                                fill: $text-light;
+                            }
+                        }
+                    }
+                    &.tool-delete {
+                        &:hover {
+                            background-color: $danger;
+                            .trash-cls-1 {
+                                stroke: $text-light;
+                            }
+                            .trash-cls-2 {
+                                fill: $text-light;
+                            }
+                        }
+                    }
+                }
+            }
+            td {
+                > * {
+                    margin-bottom: 5px;
+                }
+            }
+        }
+    }
+}

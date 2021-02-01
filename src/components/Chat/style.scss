@@ -1,0 +1,39 @@
+@import '../../variables.scss';
+
+.chat-container {
+    position: fixed;
+    bottom: -550px;
+    right: 30px;
+    height: 600px;
+    width: 300px;
+    display: block;
+    background: $white;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 0 4px #00000020;
+    transition: 0.2s ease-out;
+    &.active {
+        bottom: 0;
+    }
+    header {
+        display: flex;
+        justify-content: center;
+        padding: 16px;
+        box-sizing: border-box;
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 3px 5px -4px #00000030;
+        cursor: pointer;
+        &:hover {
+            background-color: $charcoal;
+            color: $turquoise;
+            #message-svg {
+                g, line {
+                    stroke: $turquoise;
+                }
+            }
+        }
+        h1 {
+            font-size: 18px;
+            font-weight: 500;
+        }
+    }
+}

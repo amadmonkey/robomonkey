@@ -1,0 +1,148 @@
+@import '../../variables.scss';
+
+html,
+body {
+    font-family: Montserrat, "Montserrat", Sans-Serif;
+    background-color: $primary;
+    background-image: url(../../img/bg-4.svg);
+    background-size: 6%;
+    background-position: center;
+    font-size: 14px;
+}
+
+table {
+    width: 100%;
+    tr {
+        display: block;
+        padding: 6px;
+        &:nth-child(even) {
+            background-color: #F6F6F6;
+        }
+        td {
+            display: inline-block;
+        }
+    }
+}
+
+.link {
+    position: relative;
+    color: $success;
+    text-decoration: none;
+    transition: 0.1s;
+    margin: 0 5px;
+    &::before {
+        content: '';
+        position: absolute;
+        height: 2px;
+        width: 100%;
+        bottom: 0px;
+        background: repeating-linear-gradient(to right, $success, $success 5px, transparent 5px, transparent 7px);
+    }
+    &:hover {
+        color: $info;
+        &::before {
+            background: repeating-linear-gradient(to right, $info, $info 5px, transparent 5px, transparent 5px);
+        }
+    }
+}
+
+.subtitle {
+    color: #B5B5B5;
+}
+
+button {
+    cursor: pointer;
+    font-family: Montserrat, "Montserrat", Sans-Serif;
+    outline: 0;
+    &.submit {
+        width: 140px;
+        height: 55px;
+        background-color: $info;
+        border-radius: 15px;
+        font-size: 14px;
+        border: none;
+        color: $text-light;
+        box-shadow: $shadow-offset;
+        transition: 0.2s;
+        &.card {
+            position: absolute;
+            bottom: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            line-height: 0;
+        }
+        &:hover {
+            background-color: $info-dark;
+        }
+    }
+}
+
+b {
+    font-weight: bold;
+}
+
+input[type="text"], textarea {
+    outline: 0;
+    font-family: Montserrat, "Montserrat", Sans-Serif;
+}
+
+::-webkit-scrollbar-track
+{
+	background-color: $primary;
+}
+
+::-webkit-scrollbar
+{
+	width: 10px;
+	background-color: $charcoal;
+}
+
+::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: $charcoal;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #D9D9D9;
+}
+::-moz-placeholder { /* Firefox 19+ */
+color: #D9D9D9;
+}
+:-ms-input-placeholder { /* IE 10+ */
+color: #D9D9D9;
+}
+:-moz-placeholder { /* Firefox 18- */
+color: #D9D9D9;
+}
+
+@keyframes point-right {
+    0% {
+        left: -15px;
+    }
+    5% {
+        left: -17px;
+    }
+    10% {
+        left: -15px;
+    }
+    15% {
+        left: -17px;
+    }
+    20% {
+        left: -15px;
+    }
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.5;
+    }
+}

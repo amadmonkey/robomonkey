@@ -1,0 +1,60 @@
+////////////////////////////////////////////////////////////////////////
+LEGEND:
+    users: exam creators
+    participants: exam takers
+////////////////////////////////////////////////////////////////////////
+
+Step 1: STARTING QUESTIONS
+    title: text input, required
+    description: text input, optional
+    exam types: radio, required
+        o paper: show all questions in one page.
+        o wizard: show questions one at a time
+    timer: number input, dropdown, optional
+        if type paper 
+            enter time: number input
+        if type wizard
+            type: radio
+                o per question
+                    enter default time: number input
+                o whole exam
+                    enter time: number input
+    deadline: date input, optional
+
+Step 2: INSIDE EXAM CREATION
+    type of questions
+        identification: 
+            o make a feature that checks for synonyms to help users into a decision
+            o make users option to enter multiple answers
+            o for questions that give users option if they want to check that question after exam.
+        multiple choice/poll
+
+    enter how many points each question gives, default to 1
+    automatically check for correct answers.
+    SHOW DETAILS FROM STARTING QUESTIONS, GIVE OPTION TO EDIT
+    MANAGE QUESTIONS ON A LIST VIEW.
+
+Step 3: ENDING QUESTIONS
+    enter passing grade: radio
+        o percentage: number input, limited to 100
+        o number of correct answers: number input, limited to number of questions filled
+
+Step 4:
+    preview
+    publish
+
+////////////////////////////////////////////////////////////////////////
+
+WHEN TO SAVE AS DRAFT
+    every time a user creates/opens an exam, open a socket.
+    after creation
+    after entering a question
+    check for changes every 2 minutes. if something changed then update
+
+WHEN TO SAVE AS ACTIVITY
+    sheet creation
+    sheet publish
+    sheet expire
+    participant start
+    participant end
+    password update

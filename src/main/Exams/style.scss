@@ -1,0 +1,90 @@
+@import '../../variables.scss';
+
+$wizard-success: #5ae41c;
+
+.input-wrapper {
+    margin-bottom: 40px;
+}
+
+form {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.wizard-guide {
+    display: flex;
+    justify-content: space-between;
+    max-width: 460px;
+    margin: 0 auto;
+    margin-bottom: 60px;
+    padding-left: 16px;
+    .wizard-guide-line {
+        position: relative;
+        top: 45px;
+        left: -5px;
+    }
+    .wizard-guide-item {
+        &.details {
+            &.active {
+                .details-cls-1 {
+                    stroke: $charcoal;
+                }
+                .details-cls-2, .details-cls-4 {
+                    fill: $charcoal;
+                }
+            }
+            &.done {
+                .details-cls-3 {
+                    fill: #3cef48;
+                }
+                .details-cls-7 {
+                    fill: #ffc857;
+                }
+            }
+        }
+        &.questions {
+            &.active {
+                .questions-cls-1 {
+                    stroke: $charcoal;
+                }
+                .questions-cls-2, .questions-cls-3 {
+                    fill: $charcoal;
+                }
+            }
+            &.done {
+                .questions-cls-4 {
+                    fill: #3cef48;
+                }
+                .questions-cls-7 {
+                    fill: #ffc857;
+                }
+            }
+        }
+        &.review {
+            &.active {
+                .review-cls-1, .review-cls-2 {
+                    stroke: $charcoal;
+                }
+                .review-cls-3, .review-cls-4 {
+                    fill: $charcoal;
+                }
+            }
+            &.done {
+                .review-cls-5 {
+                    fill: #3cef48;
+                }
+                .review-cls-8 {
+                    fill: #ffc857;
+                }
+            }
+        }
+    }
+}
+
+.questions-container {
+    padding: 20px;
+    box-sizing: border-box;
+    form {
+        width: 100%;
+    }
+}

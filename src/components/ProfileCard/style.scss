@@ -1,0 +1,217 @@
+@import '../../variables.scss';
+
+$online: #3ef593;
+$offline: #b9b9b9;
+$busy: $danger;
+$idle: #efab21;
+
+.profile-card {
+    position: relative;
+    padding-top: 80px !important;
+    color: $charcoal;
+    margin-bottom: 40px !important;
+    header.profile-card-header {
+        position: absolute;
+        top: -10px;
+        left: 0;
+        width: 100%;
+        .profile-image {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            height: 130px;
+            width: 130px;
+            display: block;
+            border: 10px solid $charcoal;
+            border-radius: 50%;
+            background-color: orange;
+            overflow: hidden;
+            box-shadow: 0 3px 10px #00000040;
+            z-index: 1;
+            transition: 0.2s;
+            &.online {
+                border-color: $online;
+            }
+            &.offline {
+                border-color: $offline;
+            }
+            &.busy {
+                border-color: $busy;
+            }
+            &.idle {
+                border-color: $idle;
+            }
+            img {
+                height: 100%;
+                width: 100%;
+                object-fit: cover;
+            }
+        }
+        .status-container {
+            position: absolute;
+            height: 100%;
+            width: 30px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            .status-item {
+                position: absolute;
+                transition: 0.1s ease-in-out;
+                height: 30px;
+                width: 30px;
+                border-radius: 5px;
+                box-shadow: $shadow-default;
+                font-size: 13px !important;
+                font-weight: bold !important;
+                padding: 7px;
+                box-sizing: border-box;
+                background-color: $text-light;
+                border: none;
+                outline: none;
+                &:not(.active) {
+                    cursor: pointer;
+                }
+                &:hover, &.active {
+                    background-color: $charcoal;
+                    color: $text-light;
+                }
+                > div {
+                    display: inline-block;
+                    height: 10px;
+                    width: 10px;
+                    border-radius: 50%;
+                    margin-right: 3px;
+                    border: 2px solid $text-light;
+                    box-sizing: border-box;
+                }
+                &:nth-child(1) {
+                    text-align: left;
+                    right: 0;
+                    top: -40px;
+                    > div {
+                        background-color: $online;
+                    }
+                }
+                &:nth-child(2) {
+                    text-align: right;
+                    left: 0;
+                    top: -40px;
+                    > div {
+                        background-color: $offline;
+                    }
+                }
+                &:nth-child(3) {
+                    text-align: left;
+                    right: 0;
+                    bottom: -40px;
+                    > div {
+                        background-color: $busy;
+                    }
+                }
+                &:nth-child(4) {
+                    text-align: right;
+                    left: 0;
+                    bottom: -40px;
+                    > div {
+                        background-color: $idle;
+                    }
+                }
+            }
+        }
+        > div {
+            &:hover {
+                .status-container {
+                    .status-item {
+                        width: 110px;
+                        &:nth-child(1) {
+                            right: 70px;
+                        }
+                        &:nth-child(2) {
+                            left: 70px;
+                        }
+                        &:nth-child(3) {
+                            right: 70px;
+                        }
+                        &:nth-child(4) {
+                            left: 70px;
+                        }
+                        &.active {
+                            &:nth-child(1), &:nth-child(3) {
+                                right: 50px;
+                                &::before {
+                                    content: '';
+                                    clip-path: polygon(0 0, 0% 100%, 100% 50%);
+                                    position: absolute;
+                                    background-color: $charcoal;
+                                    left: -15px;
+                                    height: 10px;
+                                    width: 10px;
+                                }
+                            }
+                            &:nth-child(2), &:nth-child(4) {
+                                left: 50px;
+                                &::before {
+                                    content: '';
+                                    clip-path: polygon(100% 0, 0 50%, 100% 100%);
+                                    position: absolute;
+                                    background-color: $charcoal;
+                                    right: -15px;
+                                    height: 10px;
+                                    width: 10px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    h2 {
+        font-size: 14px;
+        font-weight: 400;
+        margin-bottom: 5px;
+    }
+    h1 {
+        font-size: 25px;
+        font-weight: 500;
+    }
+    .alerts {
+        font-size: 12px;
+        .alert-item {
+            box-shadow: 0 1px 2px #00000040;
+            padding: 10px;
+            border-radius: 7px;
+            margin-top: 10px;
+        }
+    }
+    .tools {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: -15px;
+        right: -15px;
+        button {
+            cursor: pointer;
+            position: relative;
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            border: none;
+            box-shadow: $shadow-default;
+            img {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            &.signout {
+                background-color: $danger;
+            }
+            &.settings {
+                background-color: $info;
+            }
+        }
+    }
+}
