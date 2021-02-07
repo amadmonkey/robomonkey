@@ -28,17 +28,17 @@ const Matching = (props) => {
     const questionRef = useRef();
     const [colors, setColors] = useState(_COLORS);
     const [dot, setDot] = useState(null);
-    const [start, setStart] = useState(null);
-    // let start = null;
+    const [coords, setCoords] = useState({ length: null, angle: null });
 
     // dot to update, destinationX, destinationY, sourceX, sourceY
-    const setLine = (dot, pageX, pageY, startX, startY) => {
+    const setLine = (dot, pageX, pageY, startX, startY, move) => {
         if (dot) {
+            pageY = move ? pageY + window.pageYOffset : pageY;
             let ref = dotRefs[`c${dot.col}`].current[dot.index];
             let calcX = pageX > startX ? (pageX - startX - (8)) : (startX - pageX + (8));
             let calcY = pageY > startY ? (pageY - startY - (8)) : (startY - pageY + (8));
             let totalLength = Math.sqrt(Math.pow(Math.abs(calcX) + 12, 2) + Math.pow(Math.abs(calcY) + 12, 2))
-            let angle = Math.atan2(pageX - startX - 8, - (pageY - startY - 8)) * (180 / Math.PI);
+            let angle = Math.atan2(pageX - startX - 8, - (pageY - (startY) - 8)) * (180 / Math.PI);
             ref.style.height = `${totalLength}px`;
             ref.style.transform = `rotate(${(angle + 180) % 360}deg)`;
         }
@@ -51,10 +51,12 @@ const Matching = (props) => {
             if (i > -1) {
                 switch (clickedDot.col) {
                     case 1:
+                        addColor(c2Fields[i].matched.color);
                         delete c2Fields[i].matched;
                         delete c1Fields[clickedDot.index].matched;
                         break;
                     case 2:
+                        addColor(c1Fields[i].matched.color);
                         delete c1Fields[i].matched;
                         delete c2Fields[clickedDot.index].matched;
                         break;
@@ -62,74 +64,62 @@ const Matching = (props) => {
                         break;
                 }
             }
+            getField(clickedDot)
             !c1Fields.filter(obj => obj.matched).length && p.setValue(aName, null, { shouldValidate: true, shouldDirty: true });
         }
         ref.style.height = `${16}px`;
-        ref.style.transform = `rotate(0deg)`;
-        ref.classList.remove('active');
-        // start = null
-        setStart(null);
         setDot(null);
     }
 
     const clickMatch = (e, clickedDot) => {
         e.stopPropagation();
         if (clickedDot) { // clicked on a dot
-            // if (dot) { // has active dot
-            //     if (dot.col !== clickedDot.col) { // is opposing dot of the active dot
-            //         let rect;
-            //         const getKeys = Object.keys(colors);
-            //         const key = getKeys[Math.floor(Math.random() * Math.floor(getKeys.length))];
-            //         let colorsCopy = { ...colors };
-            //         delete colorsCopy[key];
-            //         setColors(colorsCopy);
-            //         if (dot.col === 1) {
-            //             c1Fields[dot.index].matched = { id: clickedDot.id, client: { x: e.clientX, y: e.clientY }, color: { [key]: colors[key] }, source: true };
-            //             c2Fields[clickedDot.index].matched = { id: dot.id, client: { x: dot.clientX, y: dot.clientY }, color: { [key]: colors[key] }, source: false };
-            //             rect = dotRefs.c2.current[clickedDot.index].getBoundingClientRect();
-            //             setLine(dot, (rect.x + 8), (rect.y + 8), dot.clientX, dot.clientY);
-            //         } else {
-            //             c2Fields[dot.index].matched = { id: clickedDot.id, client: { x: e.clientX, y: e.clientY }, color: { [key]: colors[key] }, source: true };
-            //             c1Fields[clickedDot.index].matched = { id: dot.id, client: { x: dot.clientX, y: dot.clientY }, color: { [key]: colors[key] }, source: false };
-            //             rect = dotRefs.c1.current[clickedDot.index].getBoundingClientRect();
-            //             setLine(dot, (rect.x + 8), (rect.y + 8), dot.clientX, dot.clientY);
-            //         }
-            //         // start = null;
-            //         setStart(null);
-            //         setDot(null);
-            //         p.setValue(aName, "matched", { shouldValidate: true, shouldDirty: true });
-            //     }
-            // } else { // no active dot = start line
-            if (!c1Fields[clickedDot.index].rect) {
-                switch (clickedDot.col) {
-                    case 1:
-                        c1Fields[clickedDot.index].rect = e.currentTarget.getBoundingClientRect();
-                        break;
-                    case 2:
-                        c2Fields[clickedDot.index].rect = e.currentTarget.getBoundingClientRect();
-                        break;
-                }
-            }
-
-            // dotRefs[`c${clickedDot.col}`].rect = { ...dotRefs[`c${clickedDot.col}`], rect: { ...(dotRefs[`c${clickedDot.col}`].rect && e.getBoundingClientRect()) } }
-            // dotRefs[`c${clickedDot.col}`].rect = dotRefs[`c${clickedDot.col}`].rect ? dotRefs[`c${clickedDot.col}`].rect : e.currentTarget.getBoundingClientRect();
-            e.currentTarget.classList.add('active');
             // let rect = e.currentTarget.getBoundingClientRect();
-            // setDot({ ...clickedDot, clientX: rect.x, clientY: rect.y });
-            setDot(clickedDot);
-            // !start && setStart(e.currentTarget.getBoundingClientRect());
-            // }
+            let rect = dotRefs[`c${clickedDot.col}`].current[clickedDot.index].getBoundingClientRect();
+            getField(clickedDot).rect = !getField(clickedDot).rect ? { x: rect.x, y: rect.y + window.pageYOffset } : getField(clickedDot).rect
+            if (dot) { // has active dot
+                if (dot.col !== clickedDot.col) { // is opposing dot of the active dot
+
+                    // set matched
+                    let newColor = getColor(getField(dot).matched && getField(dot).matched.color);
+                    getField(dot).matched = { id: clickedDot.id, color: newColor, source: true };
+                    getField(clickedDot).matched = { id: dot.id, color: newColor, source: false };
+                    setLine(dot, getField(clickedDot).rect.x + 8, getField(clickedDot).rect.y + 8, getField(dot).rect.x, getField(dot).rect.y, false);
+
+                    // clear
+                    setDot(null);
+                    p.setValue(aName, "matched", { shouldValidate: true, shouldDirty: true });
+
+                }
+            } else { // no active dot = start line
+                getField(clickedDot).matched && resetTarget(clickedDot);
+                setDot(clickedDot);
+            }
         } else { // did not click on a dot
             dot && resetTarget(dot);
         }
     }
 
-    const mouseMove = (e) => dot && setLine(dot, e.clientX, e.clientY, dot.clientX, dot.clientY);
+    const addColor = (color) => setColors({ ...colors, ...color });
+    const getColor = () => {
+        let colorsCopy = { ...colors };
+        let keys = Object.keys(colors);
+        let key = keys[keys.length * Math.random() << 0];
+        let newColor = { [key]: colorsCopy[key] }
+        delete colorsCopy[key];
+        setColors(colorsCopy);
+        return newColor;
+    }
+
+    const getField = (dot) => {
+        return dot ? (dot.col === 1 ? c1Fields[dot.index] : c2Fields[dot.index]) : null;
+    };
+
+    const mouseMove = (e) => dot && setLine(dot, e.clientX, e.clientY, getField(dot).rect.x, getField(dot).rect.y, true);
 
     useEffect(() => {
         questionRef.current.onmousemove = mouseMove;
-        // matchingRef.ondrag = mouseMove;
-        return () => document.removeEventListener('onmousemove', mouseMove);
+        return () => questionRef.current.removeEventListener('onmousemove', mouseMove);
     }, [dot])
 
     useEffect(() => {
@@ -137,20 +127,12 @@ const Matching = (props) => {
         dotRefs.c2.current = dotRefs.c2.current.slice(0, c2Fields.length);
     }, [dotRefs])
 
-    useEffect(() => {
-        p.setValue(inputName.c1, '')
-    }, [c1Fields])
-
-    useEffect(() => {
-        p.setValue(inputName.c2, '')
-    }, [c2Fields])
-
-    useEffect(() => {
-        p.register(aName, { required: { value: true, message: 'Please match at least 2 fields from each columns' } });
-    }, [p.register])
+    useEffect(() => { p.setValue(inputName.c1, '') }, [c1Fields])
+    useEffect(() => { p.setValue(inputName.c2, '') }, [c2Fields])
+    useEffect(() => { p.register(aName, { required: { value: true, message: 'Please match at least 2 fields from each columns' } }) }, [p.register])
 
     return (
-        <QuestionWrapper questionRef={questionRef} onClick={clickMatch} id={p.id} number={p.number} type={p.type} changeTypeCallback={p.changeTypeCallback} errors={p.errors} errorNames={[qName, aName, title.c1, title.c2, name.c1, name.c2, inputName.c1, inputName.c2]}>
+        <QuestionWrapper questionRef={questionRef} onClick={clickMatch} move={mouseMove} id={p.id} number={p.number} type={p.type} changeTypeCallback={p.changeTypeCallback} errors={p.errors} errorNames={[qName, aName, title.c1, title.c2, name.c1, name.c2, inputName.c1, inputName.c2]}>
             <div className="question-types matching">
                 <InputWrapper label="Instructions" htmlFor={qName} errors={p.errors}>
                     <Input text attr={{ name: qName, placeholder: _ERROR_MESSAGE.GENERAL.QUESTION }} register={p.register({ required: { value: true, message: _ERROR_MESSAGE.GENERAL.QUESTION } })} errors={p.errors[qName]} />
@@ -183,9 +165,8 @@ const Matching = (props) => {
                             <div className="match-input-container">
                                 <div className="choice-container">
                                     <div className={`text flex ${p.errors[name.c1] ? 'danger' : ''}`}>
-                                        {/*  */}
                                         <input type="text" className="right" name={inputName.c1} ref={p.register({ required: { value: !c1Fields.length, message: _ERROR_MESSAGE.MATCHING.REQUIRED_CHOICES(watchTitle.c1 ? watchTitle.c1 : "Column A") } })} placeholder="Type to add new option" onChange={(e) => c1Append({ text: e.target.value })} />
-                                        <div className="choice-container"><div className={`match-point`} style={{ border: "none" }}></div></div>
+                                        <div className="choice-container"><div className="match-point disabled" style={{ border: "none" }}></div></div>
                                     </div>
                                 </div>
                             </div>
@@ -211,6 +192,7 @@ const Matching = (props) => {
                                         register={p.register()}
                                         onChange={(e) => !e.target.value && c2Remove(i)}
                                         onClick={clickMatch}
+                                        coords={coords}
                                     />
                                 )
                             })}
@@ -219,7 +201,7 @@ const Matching = (props) => {
                             <div className="match-input-container">
                                 <div className="choice-container" style={{ flexDirection: "row-reverse" }}>
                                     <div style={{ display: "flex" }} className={`text ${p.errors[name.c2] ? 'danger' : ''}`}>
-                                        <div className="choice-container"><div className={`match-point`} style={{ border: "none" }}></div></div>
+                                        <div className="choice-container disabled"><div className="match-point disabled" style={{ border: "none" }}></div></div>
                                         <input type="text" name={inputName.c2} ref={p.register({ required: { value: !c2Fields.length, message: _ERROR_MESSAGE.MATCHING.REQUIRED_CHOICES(watchTitle.c2 ? watchTitle.c2 : "Column B") } })} placeholder="Type to add new option" onChange={(e) => c2Append({ text: e.target.value })} />
                                     </div>
                                 </div>

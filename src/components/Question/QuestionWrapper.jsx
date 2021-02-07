@@ -13,7 +13,7 @@ const QuestionWrapper = (props) => {
     const hasError = e && Object.keys(e).filter(name => p.errorNames.includes(name));
 
     return (
-        <div ref={p.questionRef} className={`question-container ${hasError && hasError.length ? 'error' : ''}`} onClick={p.onClick} onMouseDown={p.onMouseDown}>
+        <div ref={p.questionRef} onClick={p.onClick} className={`question-container ${hasError && hasError.length ? 'error' : ''}`}>
             <span className="number">{p.number ? <><span>#</span>{p.number}</> : <img src={Plus} style={{ top: "3px", position: "relative" }} />}</span>
             <div className={`question-content ${!p.children ? 'hold' : ''}`}>
                 <header>
