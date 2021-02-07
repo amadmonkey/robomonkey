@@ -18,6 +18,17 @@ $success: #33C778;
 $warning: #FFC857;
 $danger: #F65C5C;
 
+$pink: #FF4D80;
+$yellow: #FED766;
+$blue: #2f609c;
+$brown: #F0A868;
+$space_cadet: #1f3269;
+$sky_blue: #52D1DC;
+$ksu_purple: #592E83;
+$red: #F4423C;
+$green: #41e264;
+
+
 $SemiBold: 600;
 
 .bold {
@@ -48,4 +59,17 @@ $SemiBold: 600;
     to {
         transform:rotate(360deg);
     }
+}
+
+:export {
+    turquoise: "#BDD9BF";
+    pink: "#FF4D80";
+    yellow: "#FED766";
+    blue: "#253D5B";
+    brown: "#F0A868";
+    space_cadet: "#2A324B";
+    sky_blue: "#52D1DC";
+    ksu_purple: "#592E83";
+    red: "#F4423C";
+    green: "#84F53D";
 }

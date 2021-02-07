@@ -6,39 +6,41 @@ import _QUESTION from '../../data/Question';
 import './style.scss';
 
 const QuestionWrapper = (props) => {
-    let hasError = props.errors && (props.errors[`question-${props.id}`] || props.errors[`answer-${props.id}`] || props.errors[`choiceNew-${props.id}`]) ? true : false;
-    const [selectedType, setSelectedType] = useState(props.type ? props.type : null);
 
-    const RenderNumber = () => {
-        if (props.number) return <><span>#</span>{props.number}</>
-        else return <img src={Plus} style={{ top: "3px", position: "relative" }} />
-    }
-
-    const selectOptionCallback = (option) => {
-        props.changeTypeCallback(option, props.number);
-    }
+    const p = props;
+    const e = p.errors;
+    const [selectedType, setSelectedType] = useState(p.type ? p.type : null);
+    const hasError = e && Object.keys(e).filter(name => p.errorNames.includes(name));
 
     return (
-        <div className={`question-container ${hasError ? 'error' : ''}`}>
-            <span className="number"><RenderNumber /></span>
-            <div className={`question-content ${!props.children ? 'hold' : ''}`}>
+        <div ref={p.questionRef} className={`question-container ${hasError && hasError.length ? 'error' : ''}`} onClick={p.onClick} onMouseDown={p.onMouseDown}>
+            <span className="number">{p.number ? <><span>#</span>{p.number}</> : <img src={Plus} style={{ top: "3px", position: "relative" }} />}</span>
+            <div className={`question-content ${!p.children ? 'hold' : ''}`}>
                 <header>
                     <div>
-                        <span>Type:</span> <Select choices={_QUESTION.CONSTANTS} selectedOption={selectedType} selectOptionCallback={selectOptionCallback} disabled />
+                        <span>Type:</span> <Select choices={_QUESTION.CONSTANTS} selectedOption={selectedType} selectOptionCallback={(option) => p.changeTypeCallback(option, p.number)} disabled />
                     </div>
                     <div>
                         <span>Points:</span> <input className="question-points select-container" placeholder="1" type="text" />
                     </div>
                 </header>
                 <div>
-                    {props.children}
+                    {p.children}
                 </div>
                 {
-                    hasError && (
+                    hasError &&
+                    (
                         <footer>
-                            {props.errors[`question-${props.id}`] && props.errors[`question-${props.id}`].type === 'required' && <span>{props.errors[`question-${props.id}`].message}</span>}
-                            {props.errors[`answer-${props.id}`] && props.errors[`answer-${props.id}`].type === 'required' && <span>{props.errors[`answer-${props.id}`].message}</span>}
-                            {props.errors[`choiceNew-${props.id}`] && <span>{props.errors[`choiceNew-${props.id}`].message}</span>}
+                            <div className="errors">
+                                {hasError.slice(0, 3).map((text, i) => {
+                                    try {
+                                        return <span key={i}>{e[text].message}</span>
+                                    } catch (e) {
+                                        console.log(e);
+                                    }
+                                })}
+                            </div>
+                            {/* {p.errors[`choiceNew-${p.id}`] && <span>{p.errors[`choiceNew-${p.id}`].message}</span>} */}
                         </footer>
                     )
                 }

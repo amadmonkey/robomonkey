@@ -1,22 +1,17 @@
-const consants = {
-    IDENTIFY: { label: "Identify", value: "IDENTIFY" },
-    MULTIPLE_CHOICE: { label: "Multiple Choice", value: "MULTIPLE_CHOICE" },
-    TRUE_FALSE: { label: "True / False", value: "TRUE_FALSE" },
-    MATCHING: { label: "Matching", value: "MATCHING" },
-    ESSAY: { label: "Essay", value: "ESSAY" },
-    CODE: { label: "Code", value: "CODE" },
-    VIDEO: { label: "Video", value: "VIDEO" },
-}
-
 export default {
-    CONSTANTS: consants,
-    GET: {
-        IDENTIFY: (props) => <Identify {...props} />,
-        MULTIPLE_CHOICE: (props) => <MultipleChoice {...props} />,
-        TRUE_FALSE: (props) => <TrueFalse {...props} />,
-        MATCHING: (props) => <Matching {...props} />,
-        ESSAY: (props) => <Essay {...props} />,
-        CODE: (props) => <Code {...props} />,
-        VIDEO: (props) => <Video {...props} />
+    GENERAL: {
+        REQUIRED: (field) => <><span className="bold">{field}</span> field is required</>,
+        QUESTION: "Enter a question",
+        ANSWER: "Provide an answer for your question"
+    },
+    MULTIPLE_CHOICE: {
+        REQUIRED_ANSWER: "Please choose an answer from the list of choices",
+        REQUIRED_CHOICES: "Please add two or more choices to choose from"
+    },
+    TRUE_FALSE: {
+        REQUIRED: "Is your question true or false?",
+    },
+    MATCHING: {
+        REQUIRED_CHOICES: (col) => <>Please add 1 or more choices to column <span className="bold">{col}</span></>
     }
 }

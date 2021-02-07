@@ -79,20 +79,22 @@
         footer {
             text-align: left;
             left: 40px;
-            width: auto;
             bottom: -13px;
             display: flex;
-            > span {
-                font-size: 13px;
-                padding: 5px 9px;
-                box-sizing: border-box;
-                background-color: $danger;
-                color: $white;
-                border-radius: 10px;
-                box-shadow: $shadow-default;
-                &:not(:first-child) {
-                    margin-left: 5px;
+            .errors {
+                > span {
+                    font-size: 13px;
+                    padding: 5px 9px;
+                    box-sizing: border-box;
+                    background-color: $danger;
+                    color: $white;
+                    border-radius: 10px;
+                    box-shadow: $shadow-default;
+                    &:not(:first-child) {
+                        margin-left: 5px;
+                    }
                 }
+
             }
         }
     }
@@ -165,7 +167,7 @@
         }
         &.active {
             border-color: $primary-dark;
-            color: $primary-dark
+            color: $primary-dark;
         }
         &.blink {
 
@@ -187,7 +189,7 @@
         position: absolute;
         display: block;
         width: 45px;
-        height: 120%;
+        height: 110%;
         top: 50%;
         left: -6px;
         transform: translateY(-50%);
@@ -195,10 +197,63 @@
         border: 4px solid $success;
         border-radius: 50%;
         animation: blink 1s infinite;
+        pointer-events: none;
     }
     &.has-error {
         &::before {
             content: '';
+        }
+    }
+}
+
+.true-false-container {
+    display: flex;
+    align-items: center;
+    padding: 15px 0 0px 20px;
+    font-size: 20px;
+    > div {
+        position: relative;
+        display: flex;
+        align-items: center;
+        &::before {
+            position: absolute;
+            display: block;
+            width: 100%;
+            height: 110%;
+            top: 50%;
+            left: -6px;
+            transform: translateY(-50%);
+            box-sizing: border-box;
+            border: 4px solid $success;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+            pointer-events: none;
+        }
+        &.has-error {
+            &::before {
+                content: '';
+            }
+        }
+    }
+    button {
+        margin: 0 5px;
+        display: flex;
+        align-items: center;
+        border: 4px solid transparent;
+        border-radius: 25px;
+        padding: 5px;
+        background-color: transparent;
+        box-sizing: border-box;
+        transition: 0.1s;
+        color: $charcoal;
+        > img {
+            margin-right: 3px;
+        }
+        &:hover {
+            border-color: $charcoal;
+        }
+        &.active {
+            border-color: $primary-darker;
         }
     }
 }

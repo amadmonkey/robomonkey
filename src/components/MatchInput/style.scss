@@ -1,0 +1,136 @@
+@import '../../variables.scss';
+
+.match-input-container {
+    .match-point {
+        position: relative;
+        height: 30px;
+        width: 30px;
+        padding: 10px;
+        margin: 0 10px 0 10px;
+        border: 4px solid #B2B2B2;
+        box-sizing: border-box;
+        background-color: none;
+        border-radius: 50%;
+        transition: 0.2s;
+        cursor: pointer;
+        &:hover {
+            border-color: $charcoal;
+            .dot {
+                background-color: $charcoal;
+            }
+        }
+        &.active {
+            border-color: $charcoal;
+            .dot {
+                pointer-events: none;
+                background-color: $charcoal;
+            }
+        }
+        .dot {
+            position: absolute;
+            height: 16px;
+            width: 16px;
+            // min-height: 16px;
+            // max-height: 200px;
+            min-width: 16px;
+            top: 3px;
+            left: 3px;
+            background-color: #B2B2B2;
+            border-radius: 20px;
+            transform-origin: 8px 8px;
+            &.active {
+                z-index: 9;
+            }
+        }
+        &.disabled {
+            pointer-events: none;
+            z-index: 2;
+        }
+    }
+    // .match-input {
+    //     border-color: transparent;
+    //     &:focus {
+    //         border-color: $charcoal;
+    //     }
+    // }   
+    &.turquoise {
+        .match-point {
+            border-color: $turquoise;
+            .dot {
+                background-color: $turquoise;
+            }
+        }
+    }
+    &.pink {
+        .match-point {
+            border-color: $pink;
+            .dot {
+                background-color: $pink;
+            }
+        }
+    }
+    &.yellow {
+        .match-point {
+            border-color: $yellow;
+            .dot {
+                background-color: $yellow;
+            }
+        }
+    }
+    &.blue {
+        .match-point {
+            border-color: $blue;
+            .dot {
+                background-color: $blue;
+            }
+        }
+    }
+    &.brown {
+        .match-point {
+            border-color: $brown;
+            .dot {
+                background-color: $brown;
+            }
+        }
+    }
+    &.space_cadet {
+        .match-point {
+            border-color: $space_cadet;
+            .dot {
+                background-color: $space_cadet;
+            }
+        }
+    }
+    &.sky_blue {
+        .match-point {
+            border-color: $sky_blue;
+            .dot {
+                background-color: $sky_blue;
+            }
+        }
+    }
+    &.ksu_purple {
+        .match-point {
+            border-color: $ksu_purple;
+            .dot {
+                background-color: $ksu_purple;
+            }
+        }
+    }
+    &.red {
+        .match-point {
+            border-color: $red;
+            .dot {
+                background-color: $red;
+            }
+        }
+    }
+    &.green {
+        .match-point {
+            border-color: $green;
+            .dot {
+                background-color: $green;
+            }
+        }
+    }
+}

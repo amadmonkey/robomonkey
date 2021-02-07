@@ -18,6 +18,19 @@ input[type=text], textarea {
     padding: 10px;
     box-sizing: border-box;
     font-weight: $SemiBold;
+    &.title {
+        font-size: 17px;
+        max-width: 200px;
+        color: $charcoal;
+        border: 2px solid transparent;
+        box-sizing: border-box;
+        &:focus {
+            border: 3px solid $charcoal;
+            border-radius: 10px;
+        }
+    }
+    &.left { text-align: left }
+    &.right { text-align: right }
 }
 
 input {
