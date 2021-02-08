@@ -259,3 +259,34 @@
         }
     }
 }
+
+.matching-error {
+    position: relative;
+    pointer-events: none;
+    margin-top: 30px;
+    width: 100px;
+    &.max {
+        &::before {
+            height: 100%;
+        }
+    }
+    &::before {
+        position: absolute;
+        display: block;
+        width: 200%;
+        height: calc(100% - 45px);
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        box-sizing: border-box;
+        border: 4px solid $success;
+        border-radius: 20px;
+        animation: blink 1s infinite;
+        pointer-events: none;
+    }
+    &.has-error {
+        &::before {
+            content: '';
+        }
+    }
+}

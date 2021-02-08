@@ -177,7 +177,7 @@ const Matching = (props) => {
                             </div>
                         )}
                     </InputWrapper>
-                    <div style={{ width: "100px" }}></div>
+                    <div className={`matching-error ${p.errors && p.errors[aName] && p.errors[aName].type === 'required' ? 'has-error' : ''} ${c1Fields.length === 10 || c2Fields.length === 10 ? 'max' : ''}`}></div>
                     <InputWrapper label="" htmlFor={name.c2} errors={p.errors} style={{ marginTop: "0" }}>
                         <div className={`options-wrapper ${hasError ? 'has-error' : ''}`}>
                             <div className="choice-container" style={{ display: "flex", flexDirection: "row-reverse" }}>
