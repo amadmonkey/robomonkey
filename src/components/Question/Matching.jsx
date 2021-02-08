@@ -34,7 +34,7 @@ const Matching = (props) => {
         if (dot) {
             let allowance = 0;
             if (move) {
-                pageY += window.pageYOffset
+                pageY += window.pageYOffset;
                 allowance = 17;
             }
             let calcX = pageX > startX ? (pageX - startX - (allowance)) : (startX - pageX + (allowance));
@@ -53,23 +53,12 @@ const Matching = (props) => {
         if (clickedDot) {
             let i = clickedDot.col === 1 ? c2Fields.findIndex(obj => obj.matched && obj.matched.id === clickedDot.id) : c1Fields.findIndex(obj => obj.matched && obj.matched.id === clickedDot.id);
             if (i > -1) {
-                switch (clickedDot.col) {
-                    case 1:
-                        addColor(c2Fields[i].matched.color);
-                        delete c2Fields[i].matched;
-                        delete c1Fields[clickedDot.index].matched;
-                        break;
-                    case 2:
-                        addColor(c1Fields[i].matched.color);
-                        delete c1Fields[i].matched;
-                        delete c2Fields[clickedDot.index].matched;
-                        break;
-                    default:
-                        break;
-                }
-                let clickedRef = dotRefs[`c${clickedDot.col}`].current[clickedDot.index];
-                let matchedRef = dotRefs[`c${clickedDot.col === 1 ? 2 : 1}`].current[i];
-                clickedRef.style.height = matchedRef.style.height = `${16}px`;
+                let clicked = getField(clickedDot);
+                let matched = getField({ col: clickedDot.col === 1 ? 2 : 1, index: i })
+                addColor(clickedDot.col === 1 ? c1Fields[clickedDot.index].matched.color : c2Fields[clickedDot.index].matched.color);
+                delete clicked.matched;
+                delete matched.matched;
+                dotRefs[`c${clickedDot.col}`].current[clickedDot.index].style.height = dotRefs[`c${clickedDot.col === 1 ? 2 : 1}`].current[i].style.height = `${16}px`;
             }
             getField(clickedDot)
             !c1Fields.filter(obj => obj.matched).length && p.setValue(aName, null, { shouldValidate: true, shouldDirty: true });
@@ -114,6 +103,7 @@ const Matching = (props) => {
 
     const getField = (dot) => dot ? (dot.col === 1 ? c1Fields[dot.index] : c2Fields[dot.index]) : null;
     const mouseMove = (e) => dot && setLine(dot, e.clientX, e.clientY, getField(dot).rect.x, getField(dot).rect.y, true);
+
     const removeField = (index, field) => {
         field.col === 1 ? c1Remove(index) : c2Remove(index);
         resetTarget(field);
@@ -131,11 +121,11 @@ const Matching = (props) => {
             fields.map((obj, i) => {
                 obj.index = i;
                 let rect = dotParentRefs[`c${col}`].current[i].getBoundingClientRect();
-                obj.rect = { x: rect.x, y: rect.y }
+                obj.rect = { x: rect.x, y: rect.y + window.pageYOffset }
                 if (obj.matched && obj.matched.source) {
                     let otherColIndex = col === 1 ? c2Fields.findIndex(field => field.matched && field.matched.id === obj.id) : c1Fields.findIndex(field => field.matched && field.matched.id === obj.id);
                     let newDestinationRect = dotParentRefs[`c${col === 1 ? 2 : 1}`].current[otherColIndex].getBoundingClientRect();
-                    setLine(obj, newDestinationRect.x, newDestinationRect.y, obj.rect.x, obj.rect.y, false);
+                    setLine(obj, newDestinationRect.x, newDestinationRect.y + window.pageYOffset, obj.rect.x, obj.rect.y, false);
                 }
             })
         })
