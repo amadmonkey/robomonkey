@@ -21,7 +21,7 @@ const MatchInput = (props) => {
                     onChange={p.onChange}
                 />
                 <div className="choice-container">
-                    <div ref={p.dotParentRef} className={`match-point ${p.activeDot && p.activeDot.id === p.field.id ? 'active' : ''} ${type}`} {...events}>
+                    <div ref={p.dotContainerRef} className={`match-point ${p.activeDot && p.activeDot.id === p.field.id ? 'active' : ''} ${type}`} {...events}>
                         <div ref={p.dotRef} className={`dot ${p.activeDot && p.activeDot.id === p.field.id ? 'active' : ''}`}></div>
                     </div>
                 </div>

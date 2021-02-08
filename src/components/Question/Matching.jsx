@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { get, useFieldArray } from 'react-hook-form';
+import { useFieldArray } from 'react-hook-form';
 import Input from '../Input';
 import InputWrapper from '../InputWrapper';
 import QuestionWrapper from './QuestionWrapper';
@@ -10,33 +10,35 @@ import MatchInput from '../MatchInput';
 
 import _STYLE_VARS from '../../variables.scss';
 
+class Column {
+    constructor(title, name, inputName, watchTitle) {
+        this.title = title;
+        this.name = name;
+        this.inputName = inputName;
+        this.watchTitle = watchTitle;
+    }
+}
+
 const Matching = (props) => {
 
     const p = props;
     const qName = `question-${p.id}`;
     const aName = `answer-${p.id}`;
-    const title = { c1: `column-1-title-${p.id}`, c2: `column-2-title-${p.id}` }
-    const name = { c1: `column-1-${p.id}`, c2: `column-2-${p.id}` }
-    const inputName = { c1: `new-column-1-${p.id}`, c2: `new-column-2-${p.id}` }
-    const watchTitle = { c1: p.watch(title.c1, "Column A"), c2: p.watch(title.c2, "Column B") }
-    const dotParentRefs = { c1: useRef([]), c2: useRef([]) }
+    const c1 = new Column(`column-1-title-${p.id}`, `column-1-name-${p.id}`, `new-column-1-${p.id}`, p.watch(`column-1-title-${p.id}`, "Column A"));
+    const c2 = new Column(`column-2-title-${p.id}`, `column-2-name-${p.id}`, `new-column-2-${p.id}`, p.watch(`column-2-title-${p.id}`, "Column B"));
+    const { fields: c1Fields, append: c1Append, remove: c1Remove } = useFieldArray({ name: c1.name, control: p.control });
+    const { fields: c2Fields, append: c2Append, remove: c2Remove } = useFieldArray({ name: c2.name, control: p.control });
+    const dotContainerRefs = { c1: useRef([]), c2: useRef([]) }
     const dotRefs = { c1: useRef([]), c2: useRef([]) }
-    const { fields: c1Fields, append: c1Append, remove: c1Remove } = useFieldArray({ name: name.c1, control: p.control });
-    const { fields: c2Fields, append: c2Append, remove: c2Remove } = useFieldArray({ name: name.c2, control: p.control });
-
-    let hasError = false;
 
     const [colors, setColors] = useState(_COLORS);
     const [dot, setDot] = useState(null);
 
-    // dot to update, destinationX, destinationY, sourceX, sourceY
+    // render line
     const setLine = (dot, pageX, pageY, startX, startY, move) => {
         if (dot) {
             let allowance = 0;
-            if (move) {
-                pageY += window.pageYOffset;
-                allowance = 17;
-            }
+            if (move) { pageY += window.pageYOffset; allowance = 17 }
             let calcX = pageX > startX ? (pageX - startX - (allowance)) : (startX - pageX + (allowance));
             let calcY = pageY > startY ? (pageY - startY - (allowance)) : (startY - pageY + (allowance));
             let totalLength = Math.sqrt(Math.pow(Math.abs(calcX) + 11, 2) + Math.pow(Math.abs(calcY) + 11, 2))
@@ -49,6 +51,7 @@ const Matching = (props) => {
         }
     }
 
+    // reset dot
     const resetTarget = (clickedDot) => {
         if (clickedDot) {
             let i = clickedDot.col === 1 ? c2Fields.findIndex(obj => obj.matched && obj.matched.id === clickedDot.id) : c1Fields.findIndex(obj => obj.matched && obj.matched.id === clickedDot.id);
@@ -67,7 +70,8 @@ const Matching = (props) => {
         setDot(null);
     }
 
-    const clickMatch = (e, clickedDot) => {
+    // on dot click
+    const clickDot = (e, clickedDot) => {
         e.stopPropagation();
         if (clickedDot) { // clicked on a dot
             if (dot) { // has active dot
@@ -77,11 +81,11 @@ const Matching = (props) => {
                     getField(dot).matched = { id: clickedDot.id, color: newColor, source: true };
                     getField(clickedDot).matched = { id: dot.id, color: newColor, source: false };
                     setLine(dot, getField(clickedDot).rect.x, getField(clickedDot).rect.y, getField(dot).rect.x, getField(dot).rect.y, false);
-                    // clear
+                    // clear active dot
                     setDot(null);
                     p.setValue(aName, "matched", { shouldValidate: true, shouldDirty: true });
                 }
-            } else { // no active dot = start line
+            } else { // no active dot = set active dot / start line
                 getField(clickedDot).matched && resetTarget(clickedDot);
                 setDot(clickedDot);
             }
@@ -110,78 +114,76 @@ const Matching = (props) => {
     }
 
     useEffect(() => {
-        window.onmousemove = mouseMove;
-        return () => window.removeEventListener('onmousemove', mouseMove);
-    }, [dot])
-
-
-    useEffect(() => {
-        [c1Fields, c2Fields].map((fields, i) => {
+        [c1Fields, c2Fields].map((fieldGroup, i) => {
             let col = i + 1;
-            fields.map((obj, i) => {
+            fieldGroup.map((obj, i) => {
                 obj.index = i;
-                let rect = dotParentRefs[`c${col}`].current[i].getBoundingClientRect();
+                let rect = dotContainerRefs[`c${col}`].current[i].getBoundingClientRect();
                 obj.rect = { x: rect.x, y: rect.y + window.pageYOffset }
                 if (obj.matched && obj.matched.source) {
                     let otherColIndex = col === 1 ? c2Fields.findIndex(field => field.matched && field.matched.id === obj.id) : c1Fields.findIndex(field => field.matched && field.matched.id === obj.id);
-                    let newDestinationRect = dotParentRefs[`c${col === 1 ? 2 : 1}`].current[otherColIndex].getBoundingClientRect();
+                    let newDestinationRect = dotContainerRefs[`c${col === 1 ? 2 : 1}`].current[otherColIndex].getBoundingClientRect();
                     setLine(obj, newDestinationRect.x, newDestinationRect.y + window.pageYOffset, obj.rect.x, obj.rect.y, false);
                 }
             })
         })
-        p.setValue(inputName.c1, '');
-        p.setValue(inputName.c2, '');
+        p.setValue(c1.inputName, '');
+        p.setValue(c2.inputName, '');
     }, [c1Fields, c2Fields])
+
+    useEffect(() => {
+        window.onmousemove = mouseMove;
+        return () => window.removeEventListener('onmousemove', mouseMove);
+    }, [dot])
 
     useEffect(() => { p.register(aName, { required: { value: true, message: 'Please match at least 2 fields from each columns' } }) }, [p.register])
 
     return (
-        <QuestionWrapper questionRef={p.questionRef} onClick={clickMatch} move={mouseMove} id={p.id} number={p.number} type={p.type} changeTypeCallback={p.changeTypeCallback} errors={p.errors} errorNames={[qName, aName, title.c1, title.c2, name.c1, name.c2, inputName.c1, inputName.c2]}>
+        <QuestionWrapper questionRef={p.questionRef} onClick={clickDot} move={mouseMove} id={p.id} number={p.number} type={p.type} changeTypeCallback={p.changeTypeCallback} errors={p.errors} errorNames={[qName, aName, c1.title, c2.title, c1.name, c2.name, c1.inputName, c2.inputName]}>
             <div className="question-types matching">
                 <InputWrapper label="Instructions" htmlFor={qName} errors={p.errors}>
                     <Input text attr={{ name: qName, placeholder: _ERROR_MESSAGE.GENERAL.QUESTION }} register={p.register({ required: { value: true, message: _ERROR_MESSAGE.GENERAL.QUESTION } })} errors={p.errors[qName]} />
                 </InputWrapper>
                 <div style={{ display: "flex", justifyContent: "center", padding: "20px" }}>
-                    <InputWrapper label="" htmlFor={name.c1} errors={p.errors}>
+                    <InputWrapper label="" htmlFor={c1.name} errors={p.errors}>
                         <div className="choice-container">
-                            <Input text attr={{ name: title.c1, className: 'title right', placeholder: "Column A" }} register={p.register()} />
+                            <Input text attr={{ name: c1.title, className: 'title right', placeholder: "Column A" }} register={p.register()} />
                         </div>
-                        <div className={`options-wrapper ${hasError ? 'has-error' : ''}`}>
+                        <div className="options-wrapper">
                             {c1Fields.map((field, i) => {
                                 return (
                                     <MatchInput
                                         key={field.id}
                                         index={i}
                                         dotRef={el => dotRefs.c1.current[i] = el}
-                                        dotParentRef={el => dotParentRefs.c1.current[i] = el}
+                                        dotContainerRef={el => dotContainerRefs.c1.current[i] = el}
                                         activeDot={dot}
-                                        name={`${name.c1}[${i}].text`}
+                                        name={`${c1.name}[${i}].text`}
                                         field={field}
                                         fields={c1Fields}
                                         register={p.register()}
                                         onChange={(e) => !e.target.value && removeField(i, field)}
-                                        onClick={clickMatch}
+                                        onClick={clickDot}
                                     />
                                 )
                             })}
                         </div>
-                        {/* add a blank one on the bottom for adding */}
                         {c1Fields.length < 10 && (
                             <div className="match-input-container">
                                 <div className="choice-container">
-                                    <div className={`text flex ${p.errors[name.c1] ? 'danger' : ''}`}>
-                                        <input type="text" className="right" name={inputName.c1} ref={p.register({ required: { value: !c1Fields.length, message: _ERROR_MESSAGE.MATCHING.REQUIRED_CHOICES(watchTitle.c1 ? watchTitle.c1 : "Column A") } })} placeholder="Type to add new option" onChange={(e) => c1Append({ text: e.target.value, col: 1 })} />
+                                    <div className={`text flex ${p.errors[c1.name] ? 'danger' : ''}`}>
+                                        <input type="text" className="right" name={c1.inputName} ref={p.register({ required: { value: !c1Fields.length, message: _ERROR_MESSAGE.MATCHING.REQUIRED_CHOICES(c1.watchTitle ? c1.watchTitle : "Column A") } })} placeholder="Type to add new option" onChange={(e) => c1Append({ text: e.target.value, col: 1 })} />
                                         <div className="choice-container"><div className="match-point disabled" style={{ border: "none" }}></div></div>
                                     </div>
                                 </div>
                             </div>
                         )}
                     </InputWrapper>
-                    <div className={`matching-error ${p.errors && p.errors[aName] && p.errors[aName].type === 'required' ? 'has-error' : ''} ${c1Fields.length === 10 || c2Fields.length === 10 ? 'max' : ''}`}></div>
-                    <InputWrapper label="" htmlFor={name.c2} errors={p.errors} style={{ marginTop: "0" }}>
-                        <div className={`options-wrapper ${hasError ? 'has-error' : ''}`}>
+                    <div className={`matching-error ${p.errors && p.errors[aName] && p.errors[aName].type === 'required' && c1Fields.length && c2Fields.length ? 'has-error' : ''} ${c1Fields.length === 10 || c2Fields.length === 10 ? 'max' : ''}`}></div>
+                    <InputWrapper label="" htmlFor={c2.name} errors={p.errors} style={{ marginTop: "0" }}>
+                        <div className="options-wrapper">
                             <div className="choice-container" style={{ display: "flex", flexDirection: "row-reverse" }}>
-                                <Input text attr={{ name: title.c2, className: 'title left', placeholder: "Column B" }} register={p.register} />
+                                <Input text attr={{ name: c2.title, className: 'title left', placeholder: "Column B" }} register={p.register} />
                             </div>
                             {c2Fields.map((field, i) => {
                                 return (
@@ -190,14 +192,14 @@ const Matching = (props) => {
                                         key={field.id}
                                         index={i}
                                         dotRef={el => dotRefs.c2.current[i] = el}
-                                        dotParentRef={el => dotParentRefs.c2.current[i] = el}
+                                        dotContainerRef={el => dotContainerRefs.c2.current[i] = el}
                                         activeDot={dot}
-                                        name={`${name.c2}[${i}].text`}
+                                        name={`${c2.name}[${i}].text`}
                                         field={field}
                                         fields={c2Fields}
                                         register={p.register()}
                                         onChange={(e) => !e.target.value && removeField(i, field)}
-                                        onClick={clickMatch}
+                                        onClick={clickDot}
                                     />
                                 )
                             })}
@@ -205,9 +207,9 @@ const Matching = (props) => {
                         {c2Fields.length < 10 && (
                             <div className="match-input-container">
                                 <div className="choice-container" style={{ flexDirection: "row-reverse" }}>
-                                    <div style={{ display: "flex" }} className={`text ${p.errors[name.c2] ? 'danger' : ''}`}>
+                                    <div style={{ display: "flex" }} className={`text ${p.errors[c2.name] ? 'danger' : ''}`}>
                                         <div className="choice-container disabled"><div className="match-point disabled" style={{ border: "none" }}></div></div>
-                                        <input type="text" name={inputName.c2} ref={p.register({ required: { value: !c2Fields.length, message: _ERROR_MESSAGE.MATCHING.REQUIRED_CHOICES(watchTitle.c2 ? watchTitle.c2 : "Column B") } })} placeholder="Type to add new option" onChange={(e) => c2Append({ text: e.target.value, col: 2 })} />
+                                        <input type="text" name={c2.inputName} ref={p.register({ required: { value: !c2Fields.length, message: _ERROR_MESSAGE.MATCHING.REQUIRED_CHOICES(c2.watchTitle ? c2.watchTitle : "Column B") } })} placeholder="Type to add new option" onChange={(e) => c2Append({ text: e.target.value, col: 2 })} />
                                     </div>
                                 </div>
                             </div>

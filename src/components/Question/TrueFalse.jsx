@@ -21,7 +21,7 @@ const TrueFalse = (props) => {
                 <InputWrapper label="Question" htmlFor={qName} errors={props.errors}>
                     <Input text attr={{ name: qName, className: '' }} register={props.register({ required: { value: true, message: "Question is required" } })} errors={props.errors[qName]} />
                 </InputWrapper>
-                <InputWrapper label="Answer" htmlFor={qName} errors={props.errors}>
+                <InputWrapper htmlFor={qName} errors={props.errors}>
                     <div className="true-false-container">
                         Is this
                         <div className={props.errors && props.errors[aName] && props.errors[aName].type === 'required' ? 'has-error' : ''}>
