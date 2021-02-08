@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Input from '../Input';
 import './style.scss';
 
@@ -10,6 +10,7 @@ const MatchInput = (props) => {
     let events = {
         onClick: callBack
     }
+
     return (
         <div className={`match-input-container flex ${color}`}>
             <div className="choice-container" style={{ flexDirection: p.reverse ? 'row-reverse' : 'row' }}>
@@ -20,8 +21,8 @@ const MatchInput = (props) => {
                     onChange={p.onChange}
                 />
                 <div className="choice-container">
-                    <div className={`match-point ${p.activeDot && p.activeDot.id === p.field.id ? 'active' : ''} ${type}`} {...events}>
-                        <div ref={p.elem} className="dot"></div>
+                    <div ref={p.dotParentRef} className={`match-point ${p.activeDot && p.activeDot.id === p.field.id ? 'active' : ''} ${type}`} {...events}>
+                        <div ref={p.dotRef} className={`dot ${p.activeDot && p.activeDot.id === p.field.id ? 'active' : ''}`}></div>
                     </div>
                 </div>
             </div>

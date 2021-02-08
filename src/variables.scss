@@ -52,6 +52,11 @@ $SemiBold: 600;
   animation-timing-function: linear; 
 }
 
+@keyframes slide {
+	0% {transform:translateY(-100%) rotate(90deg);}
+	100% {transform:translateY(100%) rotate(90deg);}
+}
+
 @keyframes spin {
     from {
         transform:rotate(0deg);

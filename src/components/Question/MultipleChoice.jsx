@@ -41,7 +41,7 @@ const MultipleChoice = (props) => {
                     </div>
                     {/* add a blank one on the bottom for adding */}
                     <div className="choice-container">
-                        <button className="letter add" type="button"><span>{String.fromCharCode(97 + fields.length)}</span></button>
+                        <button className="letter add" type="button" tabIndex="-1"><span>{String.fromCharCode(97 + fields.length)}</span></button>
                         <div className={`text ${p.errors ? 'danger' : ''}`}>
                             <input type="text" name={nName} placeholder="Type to add new option" ref={p.register({ required: { value: fields.length < 2, message: _ERROR_MESSAGE.MULTIPLE_CHOICE.REQUIRED_CHOICES } })} onChange={(e) => append({ text: e.target.value })} />
                         </div>
