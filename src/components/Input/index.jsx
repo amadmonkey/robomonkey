@@ -11,6 +11,12 @@ const Input = (props) => {
                 </div>
             }
             {
+                props.number &&
+                <div className={`text ${props.errors ? 'danger' : ''}`} style={props.style}>
+                    <input type="text" {...props.attr} ref={props.register} onChange={props.onChange} />
+                </div>
+            }
+            {
                 props.textArea &&
                 <div className={`textarea ${props.errors ? 'danger' : ''}`} style={props.style}>
                     <textarea rows="5" {...props.attr} ref={props.register} onChange={props.onChange} ></textarea>

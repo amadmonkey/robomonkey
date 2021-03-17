@@ -1,0 +1,54 @@
+@import '../../variables.scss';
+
+form {
+    width: calc(100% - 50px);
+    margin: 0 auto;
+    .form-button-group {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        position: absolute;
+        right: 0;
+        width: 100%;
+        top: unset;
+        bottom: -80px;
+        line-height: 0;
+        box-sizing: border-box;
+        transition: 0.3s;
+        button, .button {
+            cursor: pointer;
+            width: 140px;
+            height: 55px;
+            background-color: $info;
+            border-radius: 15px;
+            font-size: 14px;
+            border: none;
+            color: $text-light;
+            box-shadow: $shadow-offset;
+            right: 0;
+            transition: 0.1s;
+            padding: 10px;
+            box-sizing: border-box;
+            text-align: center;
+            line-height: 2.5;
+            text-decoration: none;
+            &:not(:first-child) {
+                margin-left: 20px;
+            }
+            &:hover {
+                background-color: $info-dark;
+            }
+        } 
+        &.float {
+            right: -80px;
+            width: auto;
+            flex-direction: column;
+            justify-content: flex-start;
+            button, .button {
+                margin-left: 0;
+                transform: scale(0.7);
+                box-shadow: $shadow-default;
+            }
+        }
+    }
+}

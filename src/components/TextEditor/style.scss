@@ -1,0 +1,35 @@
+@import '../../variables.scss';
+
+.text-editor-container {
+    .text-editor {
+        border-bottom: 1px solid $charcoal;
+        min-height: 200px;
+        padding: 20px;
+        &:focus {
+            outline: none;
+            border-bottom: 0;
+            box-shadow: 0 2px 3px $text-dark;
+            border-radius: 10px;
+        }
+    }
+    .floating-toolbar {
+        display: inline-block;
+        width: auto;
+        margin-top: 10px;
+        box-shadow: $shadow-default;
+        border-radius: 23px;
+        overflow: hidden;
+        .toolbar-button {
+            background-color: $white;
+            border: none;
+            padding: 5px;
+            height: 36px;
+            width: 36px;
+            > * {
+                width: 20px;
+                height: 20px;
+                fill: $charcoal
+            }
+        }
+    }
+}

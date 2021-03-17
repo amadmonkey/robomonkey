@@ -75,7 +75,7 @@ const Matching = (props) => {
         e.stopPropagation();
         if (clickedDot) { // clicked on a dot
             if (dot) { // has active dot
-                if (dot.col !== clickedDot.col) { // is opposing dot of the active dot
+                if (dot.col !== clickedDot.col && !getField(clickedDot).matched) { // is opposing dot of the active dot
                     // set matched
                     let newColor = getColor(getField(dot).matched && getField(dot).matched.color);
                     getField(dot).matched = { id: clickedDot.id, color: newColor, source: true };
@@ -83,6 +83,7 @@ const Matching = (props) => {
                     setLine(dot, getField(clickedDot).rect.x, getField(clickedDot).rect.y, getField(dot).rect.x, getField(dot).rect.y, false);
                     // clear active dot
                     setDot(null);
+                    // resetTarget(clickedDot);
                     p.setValue(aName, "matched", { shouldValidate: true, shouldDirty: true });
                 }
             } else { // no active dot = set active dot / start line
@@ -170,7 +171,7 @@ const Matching = (props) => {
                         </div>
                         {c1Fields.length < 10 && (
                             <div className="match-input-container">
-                                <div className="choice-container">
+                                <div className="choice-container disabled">
                                     <div className={`text flex ${p.errors[c1.name] ? 'danger' : ''}`}>
                                         <input type="text" className="right" name={c1.inputName} ref={p.register({ required: { value: !c1Fields.length, message: _ERROR_MESSAGE.MATCHING.REQUIRED_CHOICES(c1.watchTitle ? c1.watchTitle : "Column A") } })} placeholder="Type to add new option" onChange={(e) => c1Append({ text: e.target.value, col: 1 })} />
                                         <div className="choice-container"><div className="match-point disabled" style={{ border: "none" }}></div></div>
@@ -206,7 +207,7 @@ const Matching = (props) => {
                         </div>
                         {c2Fields.length < 10 && (
                             <div className="match-input-container">
-                                <div className="choice-container" style={{ flexDirection: "row-reverse" }}>
+                                <div className="choice-container disabled" style={{ flexDirection: "row-reverse" }}>
                                     <div style={{ display: "flex" }} className={`text ${p.errors[c2.name] ? 'danger' : ''}`}>
                                         <div className="choice-container disabled"><div className="match-point disabled" style={{ border: "none" }}></div></div>
                                         <input type="text" name={c2.inputName} ref={p.register({ required: { value: !c2Fields.length, message: _ERROR_MESSAGE.MATCHING.REQUIRED_CHOICES(c2.watchTitle ? c2.watchTitle : "Column B") } })} placeholder="Type to add new option" onChange={(e) => c2Append({ text: e.target.value, col: 2 })} />

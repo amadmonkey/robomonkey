@@ -1,3 +1,13 @@
+@font-face {
+    font-family: "Montserrat";
+    src: local("Montserrat"), url(./fonts/Montserrat/Montserrat-Regular.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: "ArialRoundedMTBold";
+    src: local("ArialRoundedMTBold"), url(./fonts/ArialRounded-MTBold.ttf) format('truetype');
+}
+
 $primary: #FFC857;
 $primary-dark: #F9C251;
 $primary-darker: #CF9A2E;
@@ -40,10 +50,46 @@ $SemiBold: 600;
 .warning { color: $warning !important }
 .danger { color: $danger !important }
 
-.bg-info { background-color: $info !important }
-.bg-success { background-color: $success !important }
-.bg-warning { background-color: $warning !important }
-.bg-danger { background-color: $danger !important }
+.bg-default {
+    background-color: $charcoal !important;
+    &.hover {
+        &:hover {
+            background-color: darken($charcoal, 10%) !important;
+        }
+    }
+}
+.bg-info {
+    background-color: $info !important;
+    &.hover {
+        &:hover {
+            background-color: darken($info, 10%) !important;
+        }
+    }
+}
+.bg-success {
+    background-color: $success !important;
+    &.hover {
+        &:hover {
+            background-color: darken($success, 10%) !important;
+        }
+    }
+}
+.bg-warning {
+    background-color: $warning !important;
+    &.hover {
+        &:hover {
+            background-color: darken($warning, 10%) !important;
+        }
+    }
+}
+.bg-danger {
+    background-color: $danger !important;
+    &.hover {
+        &:hover {
+            background-color: darken($danger, 10%) !important;
+        }
+    }
+}
 
 .spinner {
   animation-name: spin;

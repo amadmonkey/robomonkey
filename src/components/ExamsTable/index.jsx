@@ -104,50 +104,34 @@ const ExamsTable = (props) => {
 
     return (
         <Card title={<React.Fragment><img style={{ marginRight: "5px" }} src={Exam} /> Exams</React.Fragment>} link={props.link}>
-            {/* <div className="tools">
-                <Link to="/new-exam">
-                    <button>
-                        <img src={Exam} />
-                        <img src={Plus} />
-                    </button>
-                </Link>
-            </div> */}
             <table className="exams-table">
-                {/* <thead>
-                    <th className="details">Details</th>
-                    <th className="numbers"></th>
-                    <th className="tags">Tags</th>
-                    <th className="tools"></th>
-                </thead> */}
                 <tbody>
                     {
-                        examList.length &&
-                        examList.map((obj, i) => {
-                            return (
-                                <tr key={i}>
-                                    <td className="details">
-                                        <h1>{obj.name}</h1>
-                                        <p>Published on <b>{obj.date_published}</b></p>
-                                        <p>Updated <b>{obj.last_updated}</b></p>
-                                    </td>
-                                    <td className="numbers">
-                                        <p>Questions: <b>{obj.questions.count}</b></p>
-                                        <p>Participants: <b>{obj.participants.count}</b></p>
-                                    </td>
-                                    <td className="tags">
-                                        {
-                                            obj.tags.map((obj, i) => {
+                        examList.length ?
+                            examList.map((obj, i) => {
+                                return (
+                                    <tr key={i}>
+                                        <td className="details">
+                                            <h1>{obj.name}</h1>
+                                            <p>Published on <b>{obj.date_published}</b></p>
+                                            <p>Updated <b>{obj.last_updated}</b></p>
+                                        </td>
+                                        <td className="numbers">
+                                            <p>Questions: <b>{obj.questions.count}</b></p>
+                                            <p>Participants: <b>{obj.participants.count}</b></p>
+                                        </td>
+                                        <td className="tags">
+                                            {obj.tags.map((obj, i) => {
                                                 return <Tag key={i} data={obj} />
-                                            })
-                                        }
-                                    </td>
-                                    <td className="tools">
-                                        <Tooltip label="Pin"><button className="tool-pin"><Pin /></button></Tooltip>
-                                        <Tooltip label="Delete"><button className="tool-delete"><Trash /></button></Tooltip>
-                                    </td>
-                                </tr>
-                            )
-                        })
+                                            })}
+                                        </td>
+                                        <td className="tools">
+                                            <Tooltip label="Pin"><button className="tool-pin"><Pin /></button></Tooltip>
+                                            <Tooltip label="Delete"><button className="tool-delete"><Trash /></button></Tooltip>
+                                        </td>
+                                    </tr>
+                                )
+                            }) : <></>
                     }
                 </tbody>
             </table >

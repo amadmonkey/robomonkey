@@ -68,7 +68,6 @@ $idle: #efab21;
                 box-sizing: border-box;
                 background-color: $text-light;
                 border: none;
-                outline: none;
                 &:not(.active) {
                     cursor: pointer;
                 }

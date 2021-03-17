@@ -8,9 +8,6 @@
     &:not(:last-child) {
         margin-bottom: 50px;
     }
-    form {
-        width: 100%;
-    }
     header {
         font-size: 13px;
         font-weight: $SemiBold;
@@ -152,7 +149,7 @@
         font-size: 25px;
         box-sizing: border-box;
         transition: 0.2s;
-        outline: lightcoral;
+        outline: none;
         > span, img {
             position: absolute;
             top: 50%;
@@ -160,7 +157,7 @@
             transform: translate(-50%, -50%);
         }
         &:not(.add):not(.active) {
-            &:hover {
+            &:hover, &:focus {
                 border-color: #B2B2B2;
             }
         }
@@ -248,10 +245,11 @@
         box-sizing: border-box;
         transition: 0.1s;
         color: $charcoal;
+        outline: none;
         > img {
             margin-right: 3px;
         }
-        &:hover {
+        &:hover, &:focus {
             border-color: $charcoal;
         }
         &.active {

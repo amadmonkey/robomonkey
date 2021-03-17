@@ -6,10 +6,6 @@ $wizard-success: #5ae41c;
     margin-bottom: 40px;
 }
 
-form {
-    width: 90%;
-    margin: 0 auto;
-}
 
 .wizard-guide {
     display: flex;
@@ -82,9 +78,6 @@ form {
 }
 
 .questions-container {
-    padding: 20px;
+    padding-top: 30px;
     box-sizing: border-box;
-    form {
-        width: 100%;
-    }
 }

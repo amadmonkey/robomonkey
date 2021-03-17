@@ -44,5 +44,9 @@
         height: 16px;
         border: none;
         cursor: pointer;
+        outline: none;
+        &:focus {
+            box-shadow: none;
+        }
     }
 }

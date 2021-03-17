@@ -23,52 +23,6 @@ const Home = () => {
                     <OngoingExams />
                 </div>
                 <div style={{ padding: "20px", paddingTop: "130px" }}>
-                    <Card title={<React.Fragment><img style={{ marginRight: "5px" }} src={Test} /> Recent Activity</React.Fragment>} link={{ label: "Go to Activity", to: "/activity" }}>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td width="60%">test</td>
-                                    <td width="40%">test</td>
-                                </tr>
-                                <tr>
-                                    <td width="60%">test</td>
-                                    <td width="40%">test</td>
-                                </tr>
-                                <tr>
-                                    <td width="60%">test</td>
-                                    <td width="40%">test</td>
-                                </tr>
-                                <tr>
-                                    <td width="60%">test</td>
-                                    <td width="40%">test</td>
-                                </tr>
-                                <tr>
-                                    <td width="60%">test</td>
-                                    <td width="40%">test</td>
-                                </tr>
-                                <tr>
-                                    <td width="60%">test</td>
-                                    <td width="40%">test</td>
-                                </tr>
-                                <tr>
-                                    <td width="60%">test</td>
-                                    <td width="40%">test</td>
-                                </tr>
-                                <tr>
-                                    <td width="60%">test</td>
-                                    <td width="40%">test</td>
-                                </tr>
-                                <tr>
-                                    <td width="60%">test</td>
-                                    <td width="40%">test</td>
-                                </tr>
-                                <tr>
-                                    <td width="60%">test</td>
-                                    <td width="40%">test</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </Card>
                     <ExamsTable link={{ label: "Go to Exams", to: "/exams" }} dashboard />
                     <Card title={<React.Fragment><img style={{ marginRight: "5px" }} src={Test} /> Recent Activity</React.Fragment>} link={{ label: "Go to Polls", to: "/polls" }} showMore={showMore}>
                         <table>

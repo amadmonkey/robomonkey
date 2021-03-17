@@ -1,9 +1,16 @@
+// app
 import React, { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useForm, useFieldArray } from 'react-hook-form';
-import QuestionsIcon from '../../img/questions-icon.svg';
+
+// components
 import Card from '../../components/Card';
-import _QUESTION from '../../data/Question';
+import Form from '../../components/Form';
 import QuestionWrapper from '../../components/Question/QuestionWrapper';
+
+// icons
+import QuestionsIcon from '../../img/questions-icon.svg';
+import _QUESTION from '../../data/Question';
 
 const Questions = () => {
 
@@ -23,18 +30,21 @@ const Questions = () => {
         insert(i - 1, newType)
     }
 
+    const additionalButtons = () => {
+        return <Link to="/exams/new-exam/details" className="button bg-default hover">Previous</Link>
+    }
+
     return (
         <Card title={<React.Fragment><img style={{ marginRight: "5px" }} src={QuestionsIcon} /> Questions</React.Fragment>}>
             <div className="questions-container">
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <Form onSubmit={handleSubmit(onSubmit)} additionalButtons={additionalButtons()}>
                     {
                         fields.map((obj, i) => {
                             return _QUESTION.GET[obj.value]({ questionRef: el => questionRefs.current[i] = el, key: obj.id, number: i + 1, id: obj.id, type: obj, changeTypeCallback: changeType, register: register, errors: errors, setValue: setValue, getValues: getValues, watch: watch, setError: setError, control: control, focus: true, formState: formState });
                         })
                     }
-                    <button type="submit" className="submit card">Next</button>
-                </form>
-                <QuestionWrapper changeTypeCallback={(data) => append(data)} />
+                </Form>
+                <QuestionWrapper changeTypeCallback={(data) => append(data)} style={{ width: "90%", marginRight: "auto", marginLeft: "auto", marginBottom: "40px" }} />
             </div>
         </Card>
     )

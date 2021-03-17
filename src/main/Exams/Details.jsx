@@ -1,11 +1,17 @@
+// app
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
-import DetailsIcon from '../../img/details-icon.svg';
+
+// components
 import Card from '../../components/Card';
 import Input from '../../components/Input';
 import Radio from '../../components/Radio';
 import InputWrapper from '../../components/InputWrapper';
+import Form from '../../components/Form';
+
+// image
+import DetailsIcon from '../../img/details-icon.svg';
 import TypePaper from '../../img/type-paper.svg';
 import TypeWizard from '../../img/type-wizard.svg';
 
@@ -19,10 +25,10 @@ const Details = () => {
         title: {
             attr: {
                 name: 'title',
-                className: '',
+                className: ''
             },
             ref: register({
-                required: true,
+                required: { value: true, message: "Please enter a title" },
                 maxLength: 50
             }),
             errors: errors.title
@@ -30,10 +36,10 @@ const Details = () => {
         description: {
             attr: {
                 name: 'description',
-                className: '',
+                className: ''
             },
             ref: register({
-                required: true,
+                required: false,
                 maxLength: 250
             }),
             errors: errors.description
@@ -59,7 +65,7 @@ const Details = () => {
                 }
             ],
             ref: register({
-                required: true
+                required: { value: true, message: "Please select one" },
             }),
             errors: errors.type
         },
@@ -136,11 +142,11 @@ const Details = () => {
     return (
         <div style={{ maxWidth: "50%", margin: "0 auto" }}>
             <Card title={<React.Fragment><img style={{ marginRight: "5px" }} src={DetailsIcon} /> Details</React.Fragment>}>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <Form onSubmit={handleSubmit(onSubmit)}>
                     <InputWrapper label="Title" htmlFor="title" errors={errors}>
                         <Input text attr={form['title'].attr} register={form['title'].ref} errors={form['title'].errors} />
                     </InputWrapper>
-                    <InputWrapper label="Description" htmlFor="description" errors={errors}>
+                    <InputWrapper label="Description" htmlFor="description" errors={errors} optional>
                         <Input textArea attr={form['description'].attr} register={form['description'].ref} errors={form['description'].errors} />
                     </InputWrapper>
                     <InputWrapper label="Type" htmlFor="type" errors={errors}>
@@ -167,8 +173,7 @@ const Details = () => {
                             </InputWrapper>
                         </div>
                     </InputWrapper>
-                    <button type="submit" className="submit card">Next</button>
-                </form>
+                </Form>
             </Card>
         </div>
     )

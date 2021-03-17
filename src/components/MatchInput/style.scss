@@ -1,6 +1,11 @@
 @import '../../variables.scss';
 
 .match-input-container {
+    &.disabled {
+        pointer-events: none !important;
+        z-index: 0;
+        cursor: none;
+    }
     .match-point {
         position: relative;
         height: 30px;
@@ -9,7 +14,7 @@
         margin: 0 10px 0 10px;
         border: 4px solid #CCC;
         box-sizing: border-box;
-        background-color: none;
+        background-color: transparent;
         border-radius: 50%;
         transition: 0.2s;
         cursor: pointer;
@@ -39,10 +44,11 @@
                 }
             }
             &::after {
-                top:0;
-                transform:translateX(100%);
-                width:300px;
-                height:300px;
+                top: 228px;
+                left: 0px;
+                transform: translateX(100%);
+                width: 500px;
+                height: 500px;
                 position: absolute;
                 z-index:1;
                 animation: slide 1s infinite;
@@ -58,6 +64,7 @@
         &.disabled {
             pointer-events: none !important;
             z-index: 0;
+            cursor: none;
         }
     } 
     // replace this with sass variables export to be more flexible

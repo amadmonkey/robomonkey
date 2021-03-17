@@ -57,28 +57,6 @@ table {
 button {
     cursor: pointer;
     font-family: Montserrat, "Montserrat", Sans-Serif;
-    outline: 0;
-    &.submit {
-        width: 140px;
-        height: 55px;
-        background-color: $info;
-        border-radius: 15px;
-        font-size: 14px;
-        border: none;
-        color: $text-light;
-        box-shadow: $shadow-offset;
-        transition: 0.2s;
-        &.card {
-            position: absolute;
-            bottom: -80px;
-            left: 50%;
-            transform: translateX(-50%);
-            line-height: 0;
-        }
-        &:hover {
-            background-color: $info-dark;
-        }
-    }
 }
 
 b {
@@ -86,7 +64,6 @@ b {
 }
 
 input[type="text"], textarea {
-    outline: 0;
     font-family: Montserrat, "Montserrat", Sans-Serif;
 }
 
